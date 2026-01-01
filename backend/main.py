@@ -282,11 +282,12 @@ if __name__ == "__main__":
 
 
 
-from .translations import translations
+from translations import translations
 
 @app.get("/api/v1/translate")
 async def get_translated_text(key: str, request: Request):
     lang = request.headers.get("Accept-Language", "en")[0:2]
     lang = lang if lang in ['he', 'ar', 'ru', 'en'] else 'en'
     return {"key": key, "lang": lang, "text": translations.get(key, {}).get(lang, key)}
+
 
