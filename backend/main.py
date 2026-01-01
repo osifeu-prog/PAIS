@@ -1,6 +1,8 @@
 ﻿from fastapi import FastAPI
+from translations import translations
 from fastapi.staticfiles import StaticFiles
 from fastapi import Depends, HTTPException, status
+from translations import translations
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -21,6 +23,14 @@ app = FastAPI(
     description="Advanced prediction and trading platform",
     version="2.0.0"
 )
+
+from fastapi import Request
+
+@app.get("/api/v1/translate")
+async def get_translated_text(key: str, request: Request):
+    lang = request.headers.get("Accept-Language", "en")[0:2]
+    lang = lang if lang in ['he', 'ar', 'ru', 'en'] else 'en'
+    return {"key": key, "lang": lang, "text": translations.get(key, {}).get(lang, key)}
 
 # ????? CORS
 app.add_middleware(
@@ -270,4 +280,13 @@ if __name__ == "__main__":
 
 
 
+
+
+from .translations import translations
+
+@app.get("/api/v1/translate")
+async def get_translated_text(key: str, request: Request):
+    lang = request.headers.get("Accept-Language", "en")[0:2]
+    lang = lang if lang in ['he', 'ar', 'ru', 'en'] else 'en'
+    return {"key": key, "lang": lang, "text": translations.get(key, {}).get(lang, key)}
 
