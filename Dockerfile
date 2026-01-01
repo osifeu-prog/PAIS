@@ -28,7 +28,7 @@ COPY telegram_bot/ ./telegram_bot/
 COPY scripts/ ./scripts/
 
 # העתקת קבצים נחוצים מהשורש
-COPY *.py ./
+COPY *.py ./\nCOPY translations.py ./
 COPY *.txt ./
 COPY *.md ./
 
@@ -39,3 +39,4 @@ EXPOSE 8000
 
 # נקודת כניסה עם JSON format (לתיקון ה-warning)
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+

@@ -1,8 +1,16 @@
 ﻿from fastapi import FastAPI
-from translations import translations
+try:
+    from translations import translations
+except ImportError:
+    # Fallback for Docker/Production
+    translations = {"en": {}, "he": {}}
 from fastapi.staticfiles import StaticFiles
 from fastapi import Depends, HTTPException, status
-from translations import translations
+try:
+    from translations import translations
+except ImportError:
+    # Fallback for Docker/Production
+    translations = {"en": {}, "he": {}}
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -282,12 +290,17 @@ if __name__ == "__main__":
 
 
 
-from translations import translations
+try:
+    from translations import translations
+except ImportError:
+    # Fallback for Docker/Production
+    translations = {"en": {}, "he": {}}
 
 @app.get("/api/v1/translate")
 async def get_translated_text(key: str, request: Request):
     lang = request.headers.get("Accept-Language", "en")[0:2]
     lang = lang if lang in ['he', 'ar', 'ru', 'en'] else 'en'
     return {"key": key, "lang": lang, "text": translations.get(key, {}).get(lang, key)}
+
 
 

@@ -2,11 +2,12 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "uvicorn backend.main:app --host 0.0.0.0 --port $PORT"
+startCommand = "uvicorn backend.main:app --host 0.0.0.0 --port $PORT --log-level info"
 
 [[services]]
 name = "pais-api"
 port = 8000
 healthcheckPath = "/health"
-healthcheckTimeout = 120
+healthcheckTimeout = 180  # 3 דקות - זמן לאתחול ארוך
 healthcheckInterval = 30
+startTimeout = 120
