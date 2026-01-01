@@ -17,25 +17,25 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# העתקת שאר הקבצים
-COPY . .
+# העתקת קבצי backend בלבד
+COPY backend/ ./backend/
+COPY config/ ./config/
+COPY core/ ./core/
+COPY db/ ./db/
+COPY models/ ./models/
+COPY server/ ./server/
+COPY telegram_bot/ ./telegram_bot/
+COPY scripts/ ./scripts/
+
+# העתקת קבצים נחוצים מהשורש
+COPY *.py ./
+COPY *.txt ./
+COPY *.md ./
 
 # יצירת תיקיות נדרשות
 RUN mkdir -p logs
 
 EXPOSE 8000
 
-# הגדרת משתני סביבה ברירת מחדל
-ENV PORT=8000
-ENV HOST=0.0.0.0
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONPATH=/app
-
-# נקודת כניסה עם הרשאות והתחלה איטית
-CMD ["sh", "-c", "echo '🚀 Starting PAIS API...' && \
-     echo '📊 Environment variables:' && \
-     echo 'PORT: $PORT' && \
-     echo 'HOST: $HOST' && \
-     echo '📁 Current directory:' && pwd && ls -la && \
-     echo '🔧 Starting Uvicorn...' && \
-     uvicorn backend.main:app --host \$HOST --port \$PORT --log-level debug"]
+# נקודת כניסה עם JSON format (לתיקון ה-warning)
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
