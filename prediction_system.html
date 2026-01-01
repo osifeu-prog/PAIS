@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Prediction Point System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Prediction Point System</h1>
+            <p>מערכת חיזוי וסחר בנקודות עם אינטגרציית לוטו</p>
+        </header>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>📊 סטטוס מערכת</h2>
+                <div id="status">
+                    <p>בודק חיבור ל-Backend...</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🎰 לוטו אינטגרציה</h2>
+                <div id="lottery">
+                    <button onclick="getPrediction()" class="btn">קבל תחזית</button>
+                    <button onclick="getDraws()" class="btn">הגרלות אחרונות</button>
+                    <button onclick="simulate()" class="btn">סימולציית הימור</button>
+                    <div id="result"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🔗 API Endpoints</h2>
+            <div class="endpoint">
+                <strong>GET</strong> <code>/health</code>
+                <p>בדיקת בריאות המערכת</p>
+            </div>
+            <div class="endpoint">
+                <strong>GET</strong> <code>/api/v1/lottery/health</code>
+                <p>בדיקת שירות הלוטו</p>
+            </div>
+            <div class="endpoint">
+                <strong>GET</strong> <code>/api/v1/lottery/prediction</code>
+                <p>קבלת תחזית לוטו</p>
+            </div>
+            <div class="endpoint">
+                <strong>POST</strong> <code>/api/v1/lottery/simulate</code>
+                <p>סימולציית הימור</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🚀 קישורים מהירים</h2>
+            <p>
+                <a href="http://localhost:8000/docs" class="btn" target="_blank">📚 API Documentation</a>
+                <a href="http://localhost:8000/health" class="btn" target="_blank">🩺 Health Check</a>
+                <a href="http://localhost:8000/api/v1/lottery/prediction" class="btn" target="_blank">🔮 תחזית לוטו</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        async function checkStatus() {
+            try {
+                const res = await fetch('http://localhost:8000/health');
+                const data = await res.json();
+                document.getElementById('status').innerHTML = `
+                    <p><strong>🌐 Backend:</strong> ✅ ${data.status}</p>
+                    <p><strong>🗄️ Database:</strong> ${data.database}</p>
+                `;
+            } catch (error) {
+                document.getElementById('status').innerHTML = '<p>❌ לא ניתן להתחבר ל-Backend</p>';
+            }
+        }
+        
+        async function getPrediction() {
+            try {
+                const res = await fetch('http://localhost:8000/api/v1/lottery/prediction');
+                const data = await res.json();
+                document.getElementById('result').innerHTML = `
+                    <div style="background:#e8f4fd;padding:15px;margin-top:10px;border-radius:5px;">
+                        <h3>🔮 תחזית הלוטו:</h3>
+                        <p><strong>מספרים:</strong> ${data.prediction.numbers.join(', ')}</p>
+                        <p><strong>ביטחון:</strong> ${(data.prediction.confidence * 100).toFixed(0)}%</p>
+                        <p><strong>זמן:</strong> ${new Date(data.prediction.timestamp).toLocaleString()}</p>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p>❌ שגיאה בקבלת תחזית</p>';
+            }
+        }
+        
+        async function getDraws() {
+            try {
+                const res = await fetch('http://localhost:8000/api/v1/lottery/draws');
+                const data = await res.json();
+                let html = '<h3>📅 הגרלות אחרונות:</h3>';
+                data.draws.forEach(draw => {
+                    html += `<p><strong>${draw.date}:</strong> ${draw.numbers.join(', ')} (מיוחד: ${draw.special})</p>`;
+                });
+                document.getElementById('result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p>❌ שגיאה בקבלת הגרלות</p>';
+            }
+        }
+        
+        async function simulate() {
+            const numbers = Array.from({length: 5}, () => Math.floor(Math.random() * 60) + 1);
+            try {
+                const res = await fetch('http://localhost:8000/api/v1/lottery/simulate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({numbers: numbers, bet: 10})
+                });
+                const data = await res.json();
+                const won = data.won ? '✅ זכית!' : '❌ לא זכית';
+                document.getElementById('result').innerHTML = `
+                    <div style="background:${data.won ? '#d4edda' : '#f8d7da'};padding:15px;margin-top:10px;border-radius:5px;">
+                        <h3>🎲 סימולציית הימור:</h3>
+                        <p><strong>מספרים שלך:</strong> ${data.user_numbers.join(', ')}</p>
+                        <p><strong>מספרים זכים:</strong> ${data.winning_numbers.join(', ')}</p>
+                        <p><strong>התאמות:</strong> ${data.matches}</p>
+                        <p><strong>הימור:</strong> ${data.bet}</p>
+                        <p><strong>פרס:</strong> ${data.prize}</p>
+                        <h4>${won}</h4>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p>❌ שגיאה בסימולציה</p>';
+            }
+        }
+        
+        // בדיקת סטטוס ראשונית
+        checkStatus();
+        // בדיקה כל 30 שניות
+        setInterval(checkStatus, 30000);
+    </script>
+</body>
+</html>

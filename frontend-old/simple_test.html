@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction System - Simple Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Point System - Simple Test</h1>
+        <p>This is a simple HTML page to test the API connection.</p>
+        
+        <div>
+            <button onclick="testAPI()">Test API</button>
+            <button onclick="testHealth()">Test Health</button>
+            <button onclick="testUsers()">Test Users</button>
+            <button onclick="testPredictions()">Test Predictions</button>
+            <button onclick="testStats()">Test Stats</button>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        function testAPI() {
+            fetch(`${API_BASE}/api/v1/test`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayResult('testAPI', data);
+                })
+                .catch(error => {
+                    displayResult('testAPI', { error: error.message });
+                });
+        }
+        
+        function testHealth() {
+            fetch(`${API_BASE}/health`)
+                .then(response => response.json())
+                .then(data => {
+                    displayResult('testHealth', data);
+                })
+                .catch(error => {
+                    displayResult('testHealth', { error: error.message });
+                });
+        }
+        
+        function testUsers() {
+            fetch(`${API_BASE}/api/v1/users`)
+                .then(response => response.json())
+                .then(data => {
+                    displayResult('testUsers', data);
+                })
+                .catch(error => {
+                    displayResult('testUsers', { error: error.message });
+                });
+        }
+        
+        function testPredictions() {
+            fetch(`${API_BASE}/api/v1/predictions`)
+                .then(response => response.json())
+                .then(data => {
+                    displayResult('testPredictions', data);
+                })
+                .catch(error => {
+                    displayResult('testPredictions', { error: error.message });
+                });
+        }
+        
+        function testStats() {
+            fetch(`${API_BASE}/api/v1/stats`)
+                .then(response => response.json())
+                .then(data => {
+                    displayResult('testStats', data);
+                })
+                .catch(error => {
+                    displayResult('testStats', { error: error.message });
+                });
+        }
+        
+        function displayResult(test, data) {
+            const resultDiv = document.getElementById('result');
+            const pre = document.createElement('pre');
+            pre.innerHTML = `<strong>${test}:</strong>\n${JSON.stringify(data, null, 2)}`;
+            resultDiv.appendChild(pre);
+        }
+    </script>
+</body>
+</html>

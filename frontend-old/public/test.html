@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Connection</title>
+</head>
+<body>
+    <h1>Testing API Connection</h1>
+    <div id="status">Testing...</div>
+    <script>
+        // בדיקת חיבור ל-API דרך הפרוקסי
+        fetch('/api/health')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerHTML = 
+                    'API Status: ' + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById('status').innerHTML = 
+                    'Error: ' + error;
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "telegram_id": 123456789,
+      "username": "test_user1",
+      "email": "user1@example.com",
+      "user_level": "beginner",
+      "main_system_id": "USR001"
+    },
+    {
+      "telegram_id": 987654321,
+      "username": "test_user2",
+      "email": "user2@example.com",
+      "user_level": "intermediate",
+      "main_system_id": "USR002"
+    }
+  ],
+  "predictions": [
+    {
+      "user_id": 1,
+      "lottery_type": "lotto",
+      "prediction_numbers": [5, 12, 23, 34, 41, 47],
+      "prediction_date": "2024-01-15",
+      "points_awarded": 50
+    }
+  ],
+  "lottery_results": [
+    {
+      "lottery_type": "lotto",
+      "draw_date": "2024-01-14",
+      "winning_numbers": [3, 15, 22, 31, 42, 49],
+      "bonus_numbers": [12],
+      "prize_pool": 1000000
+    }
+  ],
+  "barter_listings": [
+    {
+      "user_id": 1,
+      "title": "Weekly Prediction Package",
+      "description": "7 days of premium predictions",
+      "category": "prediction_packages",
+      "points_price": 500,
+      "status": "active"
+    }
+  ]
+}

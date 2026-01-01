@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: prediction_db
+      POSTGRES_USER: prediction_user
+      POSTGRES_PASSWORD: prediction_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - DATABASE_URL=postgresql://prediction_user:prediction_pass@postgres:5432/prediction_db
+      - REDIS_URL=redis://redis:6379/0
+      - TELEGRAM_BOT_TOKEN=your_bot_token_here
+      - SECRET_KEY=your-secret-key-here
+      - DEBUG=true
+
+volumes:
+  postgres_data:

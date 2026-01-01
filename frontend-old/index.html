@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction System - WORKING</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        #result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            color: #4CAF50;
+            border-left: 4px solid #4CAF50;
+        }
+        .error {
+            color: #f44336;
+            border-left: 4px solid #f44336;
+        }
+        .loading {
+            color: #ff9800;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+            font-weight: bold;
+        }
+        .online { background: #4CAF50; }
+        .offline { background: #f44336; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Prediction Point System</h1>
+        <p style="text-align: center; opacity: 0.9;">Simple Working Version - API Test</p>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <div class="status" id="apiStatus">Checking API...</div>
+            <div class="status" id="frontendStatus">Frontend: Ready</div>
+        </div>
+        
+        <div class="button-grid">
+            <button onclick="testAPI()">Test API Connection</button>
+            <button onclick="checkHealth()">Check API Health</button>
+            <button onclick="getUsers()">Get Users List</button>
+            <button onclick="getStats()">Get System Stats</button>
+            <button onclick="openDocs()">Open API Docs</button>
+            <button onclick="openAPIRoot()">Open API Root</button>
+        </div>
+        
+        <h3>Response:</h3>
+        <div id="result">Click a button to test...</div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        async function testAPI() {
+            showResult('Testing API connection...', 'loading');
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/test`);
+                const data = await response.json();
+                showResult(JSON.stringify(data, null, 2), 'success');
+                updateStatus('online');
+            } catch (error) {
+                showResult(`❌ Error: ${error.message}\n\nTrying to connect to: ${API_BASE}\n\nMake sure:\n1. API is running on port 8000\n2. No firewall blocking\n3. Try refreshing the page`, 'error');
+                updateStatus('offline');
+            }
+        }
+        
+        async function checkHealth() {
+            showResult('Checking API health...', 'loading');
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                showResult(JSON.stringify(data, null, 2), 'success');
+                updateStatus('online');
+            } catch (error) {
+                showResult(`❌ Error: ${error.message}`, 'error');
+                updateStatus('offline');
+            }
+        }
+        
+        async function getUsers() {
+            showResult('Fetching users...', 'loading');
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/users`);
+                const data = await response.json();
+                showResult(JSON.stringify(data, null, 2), 'success');
+                updateStatus('online');
+            } catch (error) {
+                showResult(`❌ Error: ${error.message}`, 'error');
+                updateStatus('offline');
+            }
+        }
+        
+        async function getStats() {
+            showResult('Fetching system statistics...', 'loading');
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/stats`);
+                const data = await response.json();
+                showResult(JSON.stringify(data, null, 2), 'success');
+                updateStatus('online');
+            } catch (error) {
+                showResult(`❌ Error: ${error.message}`, 'error');
+                updateStatus('offline');
+            }
+        }
+        
+        function openDocs() {
+            window.open(`${API_BASE}/docs`, '_blank');
+            showResult('Opening API documentation...', 'info');
+        }
+        
+        function openAPIRoot() {
+            window.open(API_BASE, '_blank');
+            showResult('Opening API root...', 'info');
+        }
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = type;
+        }
+        
+        function updateStatus(status) {
+            const statusDiv = document.getElementById('apiStatus');
+            statusDiv.textContent = status === 'online' ? '✅ API Online' : '❌ API Offline';
+            statusDiv.className = `status ${status === 'online' ? 'online' : 'offline'}`;
+        }
+        
+        // Auto-test on load
+        window.onload = function() {
+            document.getElementById('frontendStatus').textContent = '✅ Frontend: Ready';
+            setTimeout(testAPI, 1000);
+        };
+    </script>
+</body>
+</html>

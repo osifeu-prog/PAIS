@@ -1,0 +1,54 @@
+﻿==========================================
+🎯 PREDICTION POINT SYSTEM - תיעוד מערכת
+==========================================
+תאריך יצירה: 2026-01-01 14:14:53
+סקריפט הפעלה: C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\system_status_20260101_141415.log
+
+📊 סטטוס API:
+  Lottery Analysis: ✅ עובד   Lottery Last Draws: ✅ עובד   Health: ✅ עובד   Lottery Health: ✅ עובד   Lottery Prediction: ✅ עובד
+
+🔗 קישורים חשובים:
+  API Docs: http://localhost:8000/docs
+  Frontend: http://localhost:3000
+  Backend Health: http://localhost:8000/health
+  Lottery API: http://localhost:8000/api/v1/lottery/health
+  דף ניהול: file:///C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main/prediction_system.html
+  דף קישורים: file:///C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\system_dashboard.html
+
+🛠️ מיקומי קבצים:
+  Backend: C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\backend
+  Frontend: C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\frontend-simple
+  Logs: C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\system_status_20260101_141415.log
+  Dashboard: C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\system_dashboard.html
+
+🚀 פקודות בדיקה מהירות:
+  # בדיקת health
+  curl http://localhost:8000/health
+  
+  # בדיקת lottery
+  curl http://localhost:8000/api/v1/lottery/health
+  curl http://localhost:8000/api/v1/lottery/prediction
+  
+  # סימולציה
+  ='{"numbers":[1,15,23,34,45],"bet_amount":10}'
+  curl -X POST http://localhost:8000/api/v1/lottery/simulate-bet -H "Content-Type: application/json" -d 
+
+🔧 בעיות נפוצות ופתרונות:
+  1. Frontend לא נטען? חכה 30-60 שניות
+  2. API לא מגיב? בדוק שהפורט 8000 פנוי
+  3. CORS errors? ודא שה-frontend רץ על localhost:3000
+  4. נתונים לא נשמרים? בדוק את קובץ ה-SQLite
+
+📞 הוראות חירום:
+  # עצירת כל התהליכים:
+  Get-Process python | Stop-Process -Force
+  Get-Process node | Stop-Process -Force
+  
+  # הפעלה מחדש:
+  cd "C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\backend"
+  python -m uvicorn main:app --reload
+  cd "C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\frontend-simple"
+  npm start
+
+==========================================
+2026-01-01 14:14:53 - מערכת מוכנה לשימוש!

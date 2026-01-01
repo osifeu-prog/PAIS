@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>🎯 Prediction Point System - Links</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .link-card { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin: 15px 0; transition: transform 0.2s; }
+        .link-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        a { color: #3498db; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        .timestamp { color: #7f8c8d; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Prediction Point System עם Lottery API</h1>
+        <p class="timestamp">נוצר ב: 2026-01-01 14:14:45</p>
+        
+        <h2>📊 סטטוס מערכת</h2>
+        <div class="status success">✅ Backend API: פעיל על http://localhost:8000</div>
+        <div class="status success">✅ Lottery API: פעיל על http://localhost:8000/api/v1/lottery/health</div>
+        <div class="status success">✅ Frontend React: פעיל על http://localhost:3000</div>
+        
+        <h2>🔗 קישורים מהירים</h2>
+        
+        <div class="link-card">
+            <h3>📚 API Documentation</h3>
+            <p>דוקומנטציה מלאה של כל ה-API endpoints</p>
+            <a href="http://localhost:8000/docs" target="_blank">http://localhost:8000/docs</a>
+        </div>
+        
+        <div class="link-card">
+            <h3>🎨 React Frontend</h3>
+            <p>ממשק המשתמש הראשי של המערכת</p>
+            <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>
+        </div>
+        
+        <div class="link-card">
+            <h3>❤️  Health Checks</h3>
+            <p>בדיקת סטטוס המערכת</p>
+            <a href="http://localhost:8000/health" target="_blank">Backend Health</a> |
+            <a href="http://localhost:8000/api/v1/lottery/health" target="_blank">Lottery Health</a>
+        </div>
+        
+        <div class="link-card">
+            <h3>🎰 Lottery API</h3>
+            <p>כל endpoints הלוטו</p>
+            <a href="http://localhost:8000/api/v1/lottery/prediction" target="_blank">Prediction</a> |
+            <a href="http://localhost:8000/api/v1/lottery/analysis" target="_blank">Analysis</a> |
+            <a href="http://localhost:8000/api/v1/lottery/last-draws" target="_blank">Last Draws</a>
+        </div>
+        
+        <div class="link-card">
+            <h3>📄 דף ניהול</h3>
+            <p>דף ניהול HTML (מתקדם)</p>
+            <a href="file:///C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main/prediction_system.html" target="_blank">פתח דף ניהול</a>
+        </div>
+        
+        <h2>🛠️ פקודות בדיקה (PowerShell)</h2>
+        <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; overflow-x: auto;">
+# בדיקת חיבור בסיסית
+Invoke-RestMethod -Uri "http://localhost:8000/health"
+
+# בדיקת Lottery API
+Invoke-RestMethod -Uri "http://localhost:8000/api/v1/lottery/health"
+Invoke-RestMethod -Uri "http://localhost:8000/api/v1/lottery/prediction"
+
+# סימולציית הימור
+ = @{numbers=@(1,15,23,34,45); bet_amount=10} | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:8000/api/v1/lottery/simulate-bet" -Method Post -Body  -ContentType "application/json"
+        </pre>
+        
+        <div class="timestamp">
+            <p>סקריפט הפעלה: C:\Users\Giga Store\Downloads\PAIS-main\PAIS-main\system_status_20260101_141415.log</p>
+            <p>עדכן אחרון: 2026-01-01 14:14:45</p>
+        </div>
+    </div>
+</body>
+</html>

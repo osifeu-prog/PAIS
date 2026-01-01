@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction System</title>
+</head>
+<body>
+    <h1>Prediction System Frontend</h1>
+    <p>Testing API connection...</p>
+    <div id="status"></div>
+    <script>
+        fetch('/api/health')
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('status').innerHTML = 
+                    'API Status: ' + JSON.stringify(data);
+            })
+            .catch(err => {
+                document.getElementById('status').innerHTML = 
+                    'Error: ' + err.message;
+            });
+    </script>
+</body>
+</html>

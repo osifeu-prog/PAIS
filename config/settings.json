@@ -1,0 +1,27 @@
+{
+  "app_name": "PredictionPointSystem",
+  "version": "1.0.0",
+  "debug": false,
+  "main_system_url": "https://your-main-system.com/api",
+  "webhook_secret": "change_this_to_secret_key",
+  "data_sources": {
+    "pais": "https://api.pais.co.il/lottery/results",
+    "lottery_api": "https://www.michlol.co.il/api/lottery"
+  },
+  "interest": {
+    "daily_rate": 0.001,
+    "compounding_frequency": "daily",
+    "calculation_time": "02:00"
+  },
+  "points": {
+    "initial_balance": 1000,
+    "prediction_reward": 50,
+    "participation_reward": 10,
+    "winning_multiplier": 5
+  },
+  "barter": {
+    "transaction_fee_percent": 2.5,
+    "min_transaction_amount": 10,
+    "max_listings_per_user": 20
+  }
+}

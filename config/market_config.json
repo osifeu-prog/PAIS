@@ -1,0 +1,26 @@
+{
+  "marketplace": {
+    "enabled": true,
+    "allowed_categories": [
+      "digital_products",
+      "services",
+      "prediction_packages",
+      "consultations",
+      "templates"
+    ],
+    "proposal_duration_days": 7,
+    "dispute_resolution": "admin_mediated",
+    "rating_system": true
+  },
+  "fees": {
+    "listing_fee": 1,
+    "success_fee_percent": 2.5,
+    "refund_fee_percent": 5
+  },
+  "restrictions": {
+    "min_price": 10,
+    "max_price": 10000,
+    "user_rating_required": 3.0,
+    "account_age_days": 3
+  }
+}

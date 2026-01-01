@@ -1,0 +1,14 @@
+﻿node_modules/
+backend/static/
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.log
+pais.db
+.DS_Store
+.vscode/
+.idea/
+build/

@@ -1,0 +1,15 @@
+﻿node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.vscode
+.env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.log
+.DS_Store
+build/

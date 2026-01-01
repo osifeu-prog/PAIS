@@ -1,0 +1,37 @@
+{
+  "actions": {
+    "make_prediction": {
+      "points": 50,
+      "cooldown_hours": 1
+    },
+    "participate_in_lottery": {
+      "points": 10,
+      "daily_limit": 5
+    },
+    "share_prediction": {
+      "points": 25,
+      "daily_limit": 3
+    },
+    "win_prediction": {
+      "base_multiplier": 5,
+      "accuracy_bonus": true
+    },
+    "complete_barter": {
+      "points": 15,
+      "both_parties": true
+    }
+  },
+  "interest_rules": {
+    "calculation_frequency": "daily",
+    "minimum_balance_for_interest": 100,
+    "maximum_daily_interest": 500,
+    "interest_on_held_points": true,
+    "compounding": "daily"
+  },
+  "level_multipliers": {
+    "beginner": 1.0,
+    "intermediate": 1.2,
+    "advanced": 1.5,
+    "expert": 2.0
+  }
+}

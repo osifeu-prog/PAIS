@@ -1,0 +1,116 @@
+﻿from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import asyncpg
+from contextlib import asynccontextmanager
+import logging
+from typing import Optional
+
+# ייבוא הראוטרים
+from server.api import predictions, users, ledger, market
+from server.webhooks import router as webhook_router
+from core.config import settings, DATABASE_URL
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+security = HTTPBearer()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    logger.info("Starting Prediction Point System API")
+    app.state.db_pool = await asyncpg.create_pool(DATABASE_URL, min_size=1, max_size=10)
+    logger.info("Database pool created")
+
+    yield
+
+    # Shutdown
+    logger.info("Shutting down Prediction Point System API")
+    await app.state.db_pool.close()
+    logger.info("Database pool closed")
+
+app = FastAPI(
+    title="Prediction Point System API",
+    description="Intelligent prediction system with points economy and barter marketplace",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ניצור כאן פונקציית dependency שמשתמשת ב-db_pool מה-app.state
+async def get_current_user_dep(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+) -> dict:
+    token = credentials.credentials
+
+    async with app.state.db_pool.acquire() as conn:
+        user = await conn.fetchrow("""
+            SELECT id, username, telegram_id, user_level
+            FROM users
+            WHERE api_token = $1 AND is_active = true
+        """, token)
+
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication token"
+            )
+
+        return dict(user)
+
+# נעביר את הפונקציה ל-app.state כך שניתן יהיה להשתמש בה במקומות אחרים
+app.state.get_current_user = get_current_user_dep
+
+# Include routers
+app.include_router(predictions.router, prefix="/api/v1/predictions", tags=["predictions"])
+app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
+app.include_router(ledger.router, prefix="/api/v1/ledger", tags=["ledger"])
+app.include_router(market.router, prefix="/api/v1/market", tags=["market"])
+app.include_router(webhook_router, prefix="/webhooks", tags=["webhooks"])
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Prediction Point System API",
+        "version": "1.0.0",
+        "status": "operational",
+        "docs": "/docs"
+    }
+
+@app.get("/health")
+async def health_check():
+    try:
+        async with app.state.db_pool.acquire() as conn:
+            await conn.execute("SELECT 1")
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return {"status": "unhealthy", "database": "disconnected"}
+
+@app.get("/api/v1/stats")
+async def system_stats():
+    """Get system statistics"""
+    async with app.state.db_pool.acquire() as conn:
+        stats = await conn.fetchrow("""
+            SELECT
+                (SELECT COUNT(*) FROM users) as total_users,
+                (SELECT COUNT(*) FROM predictions) as total_predictions,
+                (SELECT COUNT(*) FROM barter_listings WHERE status = 'active') as active_listings,
+                (SELECT SUM(points_balance) FROM wallets) as total_points_in_circulation,
+                (SELECT SUM(points_awarded) FROM predictions WHERE is_correct = true) as total_rewards_given
+        """)
+
+        return dict(stats)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
