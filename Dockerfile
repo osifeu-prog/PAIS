@@ -5,40 +5,32 @@ WORKDIR /app
 # התקנת תלות מערכת
 RUN apt-get update && apt-get install -y \
     gcc \
-    g++ \
     postgresql-client \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# העתקת דרישות ראשונות
+# העתקת והתקנת תלותיות פייתון
 COPY requirements.txt .
-
-# התקנת תלות פייתון
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# העתקת קבצי backend בלבד
+# העתקת כל קבצי הקוד והתיקיות הנדרשות
 COPY backend/ ./backend/
 COPY config/ ./config/
 COPY core/ ./core/
 COPY db/ ./db/
 COPY models/ ./models/
 COPY server/ ./server/
-COPY telegram_bot/ ./telegram_bot/
 COPY scripts/ ./scripts/
+COPY telegram_bot/ ./telegram_bot/
 
-# העתקת קבצים נחוצים מהשורש
-COPY *.py ./\nCOPY translations.py ./
-COPY *.txt ./
-COPY *.md ./
+# העתקת קבצי Python בודדים שנמצאים בנתיב השורש
+COPY *.py ./
+COPY translations.py ./
 
 # יצירת תיקיות נדרשות
 RUN mkdir -p logs
 
 EXPOSE 8000
 
-# נקודת כניסה עם JSON format (לתיקון ה-warning)
+# הרצת האפליקציה
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
-
-
-
