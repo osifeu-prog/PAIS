@@ -1,6 +1,5 @@
 ﻿from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi import Depends, HTTPException, status
+from fastapi.staticfiles import StaticFiles, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -264,7 +263,6 @@ except:
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
 
 
 
