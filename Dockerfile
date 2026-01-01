@@ -25,7 +25,7 @@ COPY telegram_bot/ ./telegram_bot/
 
 # העתקת קבצי Python בודדים שנמצאים בנתיב השורש
 COPY *.py ./
-COPY translations.py ./
+COPY backend/translations.py ./translations.py
 
 # יצירת תיקיות נדרשות
 RUN mkdir -p logs
@@ -34,3 +34,4 @@ EXPOSE 8000
 
 # הרצת האפליקציה
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
