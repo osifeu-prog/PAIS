@@ -12,8 +12,6 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
-
-# העתקת כל קבצי הקוד והתיקיות הנדרשות
 COPY backend/ ./backend/
 COPY config/ ./config/
 COPY core/ ./core/
@@ -22,10 +20,8 @@ COPY models/ ./models/
 COPY server/ ./server/
 COPY scripts/ ./scripts/
 COPY telegram_bot/ ./telegram_bot/
-
-# העתקת קבצי Python בודדים שנמצאים בנתיב השורש
+# העתקת קבצי Python בודדים שנמצאים בנתיב השורש (אם יש)
 COPY *.py ./
-COPY backend/translations.py ./translations.py
 
 # יצירת תיקיות נדרשות
 RUN mkdir -p logs
@@ -34,4 +30,3 @@ EXPOSE 8000
 
 # הרצת האפליקציה
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
-
