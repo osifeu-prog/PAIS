@@ -14,13 +14,20 @@ from app.schemas.token import Token
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["argon2", "bcrypt", "pbkdf2_sha256"],
+    deprecated="auto",
+    default="argon2"
+)
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password: str) -> str:
+    if len(password) > 72:
+        password = password[:72]
     return pwd_context.hash(password)
 
 def authenticate_user(db: Session, username: str, password: str) -> Optional[User]:
@@ -44,7 +51,6 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(user_data: UserCreate, db: Session = Depends(get_db)):
-    # בדיקה אם משתמש כבר קיים
     db_user = db.query(User).filter(
         (User.username == user_data.username) | 
         (User.email == user_data.email)
@@ -56,14 +62,14 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
             detail="Username or email already registered"
         )
     
-    # יצירת משתמש חדש
     hashed_password = get_password_hash(user_data.password)
     db_user = User(
         username=user_data.username,
         email=user_data.email,
         hashed_password=hashed_password,
         points=0,
-        is_active=True
+        is_active=True,
+        is_admin=False
     )
     
     db.add(db_user)
@@ -125,7 +131,6 @@ async def get_current_user(
     
     return user
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
-    if not current_user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
+@router.get("/me", response_model=UserResponse)
+async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
