@@ -21,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# הכללת routers
+# הכללת routers - הכי חשוב!
 app.include_router(auth.router, prefix="/api/v1")
 
 @app.get("/")
