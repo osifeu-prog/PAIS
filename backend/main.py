@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
 from app.api.v1.endpoints import auth
 
-# יצירת טבלאות במסד הנתונים
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -12,7 +11,6 @@ app = FastAPI(
     version="2.0.0",
 )
 
-# הגדרת CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,7 +19,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# הכללת routers - הכי חשוב!
 app.include_router(auth.router, prefix="/api/v1")
 
 @app.get("/")
