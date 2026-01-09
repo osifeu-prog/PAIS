@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
 from app.api.api import api_router
@@ -8,7 +8,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Prediction Point API",
     description="API for managing predictions and user points with JWT authentication",
-    version="2.2.1",
+    version="2.2.2",
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json"
