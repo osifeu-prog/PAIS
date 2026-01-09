@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
 from app.api.api import api_router
 
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)  # יצירת הטבלאות במסד הנתונים
 
 app = FastAPI(
     title="Prediction Point API",
