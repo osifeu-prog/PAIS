@@ -10,22 +10,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Node.js (frontend)
-frontend/node_modules/
-frontend/.env
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-
-# Build directories
-frontend/build/
-frontend/dist/
-frontend/out/
-
 # IDE
 .vscode/
 .idea/
@@ -51,3 +35,22 @@ Thumbs.db
 
 # Railway
 .railway/
+
+# Node.js (frontend)
+frontend/node_modules/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Build directories
+frontend/build/
+frontend/dist/
+frontend/out/
+
+# Vite cache
+frontend/.vite/
