@@ -1,6 +1,6 @@
+from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel
 
 class PredictionBase(BaseModel):
     title: str
@@ -10,23 +10,11 @@ class PredictionBase(BaseModel):
 class PredictionCreate(PredictionBase):
     pass
 
-class PredictionUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    predicted_outcome: Optional[str] = None
-    actual_outcome: Optional[str] = None
-    status: Optional[str] = None
-
-class PredictionInDBBase(PredictionBase):
+class Prediction(PredictionBase):
     id: int
-    actual_outcome: Optional[str] = None
-    status: str
     user_id: int
+    status: str
     created_at: datetime
-    resolved_at: Optional[datetime] = None
-
+    
     class Config:
         from_attributes = True
-
-class Prediction(PredictionInDBBase):
-    pass
