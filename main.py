@@ -1,14 +1,14 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
 from app.api.api import api_router
 
-Base.metadata.create_all(bind=engine)  # יצירת הטבלאות במסד הנתונים
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Prediction Point API",
     description="API for managing predictions and user points with JWT authentication",
-    version="2.1.0",
+    version="2.2.1",
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json"
@@ -27,13 +27,19 @@ app.include_router(api_router, prefix="/api")
 @app.get("/")
 async def root():
     return {
-        "message": "Prediction Point API",
+        "message": "Prediction Point API - Updated Structure",
         "status": "online",
-        "version": "2.1.0",
+        "version": "2.2.1",
         "docs": "/docs",
         "health": "/health"
     }
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy"}
+    import datetime
+    return {
+        "status": "healthy",
+        "timestamp": datetime.datetime.now().isoformat(),
+        "service": "prediction-point-api",
+        "version": "2.2.1"
+    }
