@@ -1,17 +1,30 @@
-﻿# Python
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+*.so
 .Python
 env/
 venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Node.js (frontend)
+frontend/node_modules/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Build directories
+frontend/build/
+frontend/dist/
+frontend/out/
 
 # IDE
 .vscode/
@@ -19,9 +32,22 @@ yarn-error.log*
 *.swp
 *.swo
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
 # OS
 .DS_Store
 Thumbs.db
 
 # Railway
-*.db
+.railway/
