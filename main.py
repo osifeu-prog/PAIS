@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
 from app.api.api import api_router
 
-# יצירת טבלאות במסד הנתונים
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -15,7 +14,6 @@ app = FastAPI(
     openapi_url="/openapi.json"
 )
 
-# הגדרת CORS מלאה
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -24,10 +22,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# הכללת routers דרך api_router המאוחד
 app.include_router(api_router, prefix="/api")
 
-@app.get("/", tags=["Root"])
+@app.get("/")
 async def root():
     return {
         "message": "Prediction Point API",
@@ -37,6 +34,6 @@ async def root():
         "health": "/health"
     }
 
-@app.get("/health", tags=["Health"])
+@app.get("/health")
 async def health_check():
     return {"status": "healthy"}
