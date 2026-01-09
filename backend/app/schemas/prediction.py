@@ -1,4 +1,4 @@
-from datetime import datetime
+﻿from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
@@ -30,7 +30,3 @@ class PredictionInDBBase(PredictionBase):
 
 class Prediction(PredictionInDBBase):
     pass
-
-class PredictionWithUser(PredictionInDBBase):
-    from app.schemas.user import UserResponse
-    user: UserResponse

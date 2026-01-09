@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import engine, Base
 from app.api.v1.api import api_router
@@ -9,9 +9,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Prediction Point API",
     description="API for managing predictions and user points with JWT authentication",
-    version="2.0.0",
+    version="2.1.0",
     docs_url="/docs",
     redoc_url="/redoc",
+    openapi_url="/openapi.json"
 )
 
 # הגדרת CORS מלאה
@@ -31,7 +32,7 @@ async def root():
     return {
         "message": "Prediction Point API",
         "status": "online",
-        "version": "2.0.0",
+        "version": "2.1.0",
         "docs": "/docs",
         "health": "/health"
     }
